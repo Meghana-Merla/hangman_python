@@ -4,131 +4,179 @@ from score_manager import save_score, display_high_scores
 
 import random
 
-def choose_category():
 
-    print("\nChoose a Category:\n")
+class HangmanGame:
 
-    categories = list(words.keys())
+    def __init__(self):
 
-    for index, category in enumerate(categories, start=1):
-        print(f"{index}. {category}")
+        self.selected_category = ""
+        self.selected_difficulty = ""
 
-    while True:
+        self.word = ""
 
-        choice = input("\nEnter your choice: ")
+        self.guessed_letters = []
 
-        if not choice.isdigit():
-            print("Please enter a valid number.")
-            continue
+        self.wrong_guesses = 0
+        self.max_wrong_guesses = 6
 
-        choice = int(choice)
+        self.score = 0
 
-        if 1 <= choice <= len(categories):
-            return categories[choice - 1]
+    def choose_category(self):
 
-        print("Invalid choice. Try again.")
+        print("\nChoose a Category:\n")
 
+        categories = list(words.keys())
 
-def choose_difficulty():
+        for index, category in enumerate(categories, start=1):
+            print(f"{index}. {category}")
 
-    difficulties = ["Easy", "Medium", "Hard"]
+        while True:
 
-    print("\nChoose Difficulty:\n")
+            choice = input("\nEnter your choice: ")
 
-    for index, difficulty in enumerate(difficulties, start=1):
-        print(f"{index}. {difficulty}")
+            if not choice.isdigit():
+                print("Please enter a valid number.")
+                continue
 
-    while True:
+            choice = int(choice)
 
-        choice = input("\nEnter your choice: ")
+            if 1 <= choice <= len(categories):
 
-        if not choice.isdigit():
-            print("Please enter a valid number.")
-            continue
+                self.selected_category = categories[choice - 1]
+                return
 
-        choice = int(choice)
+            print("Invalid choice. Try again.")
 
-        if 1 <= choice <= len(difficulties):
-            return difficulties[choice - 1]
+    def choose_difficulty(self):
 
-        print("Invalid choice. Try again.")
+        difficulties = ["Easy", "Medium", "Hard"]
 
+        print("\nChoose Difficulty:\n")
 
-def start_game():
+        for index, difficulty in enumerate(difficulties, start=1):
+            print(f"{index}. {difficulty}")
 
-    selected_category = choose_category()
+        while True:
 
-    selected_difficulty = choose_difficulty()
+            choice = input("\nEnter your choice: ")
 
-    word = random.choice(
-        words[selected_category][selected_difficulty]
-    )
+            if not choice.isdigit():
+                print("Please enter a valid number.")
+                continue
 
-    guessed_letters = []
-    wrong_guesses = 0
-    max_wrong_guesses = 6
-    score = 0
+            choice = int(choice)
 
-    print(f"\nCategory: {selected_category}")
-    print(f"Difficulty: {selected_difficulty}")
+            if 1 <= choice <= len(difficulties):
 
-    print("\nWelcome to Hangman!\n")
+                self.selected_difficulty = difficulties[choice - 1]
+                return
 
-    while wrong_guesses < max_wrong_guesses:
+            print("Invalid choice. Try again.")
+
+    def select_word(self):
+
+        self.word = random.choice(
+            words[self.selected_category][self.selected_difficulty]
+        )
+
+    def display_progress(self):
+
+        print(hangman_stages[self.wrong_guesses])
 
         display_word = ""
 
-        for letter in word:
-            if letter in guessed_letters:
+        for letter in self.word:
+
+            if letter in self.guessed_letters:
                 display_word += letter + " "
+
             else:
                 display_word += "_ "
 
-        print(hangman_stages[wrong_guesses])
         print(display_word)
-        print(f"\nCurrent Score: {score}")
 
-        if "_" not in display_word:
-            score += 50
+        print(f"\nCurrent Score: {self.score}")
 
-            print("\nYou Won!")
-            print(f"Bonus Awarded: +50")
+        return display_word
 
-            print(f"\nFinal Score: {score}")
-            player_name = input("\nEnter your name: ")
-
-            save_score(player_name, score)
-
-            display_high_scores()
-            break
+    def process_guess(self):
 
         guess = input("\nEnter a letter: ").lower()
 
-        # Input validation
+        # Validation
         if len(guess) != 1 or not guess.isalpha():
+
             print("Please enter a single alphabet letter.")
-            continue
+            return
 
-        # Duplicate guess check
-        if guess in guessed_letters:
+        if guess in self.guessed_letters:
+
             print("You already guessed that letter.")
-            continue
+            return
 
-        guessed_letters.append(guess)
+        self.guessed_letters.append(guess)
 
-        if guess in word:
+        if guess in self.word:
 
-            score += 10
+            self.score += 10
+
             print("\nCorrect Guess! +10 Points")
 
         else:
-            wrong_guesses += 1
-            print("\nIncorrect Guess!")
-            print(f"Remaining Lives: {max_wrong_guesses - wrong_guesses}")
 
-    else:
-        print(f"\nGame Over! The word was: {word}")
-        print(f"Final Score: {score}")
+            self.wrong_guesses += 1
+
+            print("\nIncorrect Guess!")
+
+            print(
+                f"Remaining Lives: "
+                f"{self.max_wrong_guesses - self.wrong_guesses}"
+            )
+
+    def save_player_score(self):
+
         player_name = input("\nEnter your name: ")
-        save_score(player_name, score)
+
+        save_score(player_name, self.score)
+
         display_high_scores()
+
+    def start(self):
+
+        self.choose_category()
+
+        self.choose_difficulty()
+
+        self.select_word()
+
+        print(f"\nCategory: {self.selected_category}")
+
+        print(f"Difficulty: {self.selected_difficulty}")
+
+        print("\nWelcome to Hangman!\n")
+
+        while self.wrong_guesses < self.max_wrong_guesses:
+
+            display_word = self.display_progress()
+
+            if "_" not in display_word:
+
+                self.score += 50
+
+                print("\nYou Won!")
+
+                print("Bonus Awarded: +50")
+
+                print(f"\nFinal Score: {self.score}")
+
+                self.save_player_score()
+
+                return
+
+            self.process_guess()
+
+        print(f"\nGame Over! The word was: {self.word}")
+
+        print(f"\nFinal Score: {self.score}")
+
+        self.save_player_score()

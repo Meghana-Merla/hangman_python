@@ -1,9 +1,10 @@
-from game import start_game
-
+from game import HangmanGame
 
 while True:
 
-    start_game()
+    game = HangmanGame()
+
+    game.start()
 
     while True:
 

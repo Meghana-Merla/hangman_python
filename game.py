@@ -1,4 +1,5 @@
 from words import words
+from utils import hangman_stages
 import random
 
 
@@ -81,6 +82,7 @@ def start_game():
             else:
                 display_word += "_ "
 
+        print(hangman_stages[wrong_guesses])
         print(display_word)
 
         if "_" not in display_word:
@@ -103,7 +105,8 @@ def start_game():
 
         if guess not in word:
             wrong_guesses += 1
-            print(f"Wrong Guess! Remaining Lives: {max_wrong_guesses - wrong_guesses}")
+            print("\nIncorrect Guess!")
+            print(f"Remaining Lives: {max_wrong_guesses - wrong_guesses}")
 
     else:
         print(f"\nGame Over! The word was: {word}")

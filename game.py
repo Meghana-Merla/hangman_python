@@ -2,13 +2,43 @@ from words import words
 import random
 
 
+def choose_category():
+
+    print("\nChoose a Category:\n")
+
+    categories = list(words.keys())
+
+    for index, category in enumerate(categories, start=1):
+        print(f"{index}. {category}")
+
+    while True:
+
+        choice = input("\nEnter your choice: ")
+
+        if not choice.isdigit():
+            print("Please enter a valid number.")
+            continue
+
+        choice = int(choice)
+
+        if 1 <= choice <= len(categories):
+            selected_category = categories[choice - 1]
+            return selected_category
+
+        print("Invalid choice. Try again.")
+
+
 def start_game():
 
-    word = random.choice(words)
+    selected_category = choose_category()
+
+    word = random.choice(words[selected_category])
+
     guessed_letters = []
     wrong_guesses = 0
     max_wrong_guesses = 6
 
+    print(f"\nCategory: {selected_category}")
     print("\nWelcome to Hangman!\n")
 
     while wrong_guesses < max_wrong_guesses:

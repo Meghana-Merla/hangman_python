@@ -1,7 +1,8 @@
 from words import words
 from utils import hangman_stages
-import random
+from score_manager import save_score, display_high_scores
 
+import random
 
 def choose_category():
 
@@ -94,6 +95,11 @@ def start_game():
             print(f"Bonus Awarded: +50")
 
             print(f"\nFinal Score: {score}")
+            player_name = input("\nEnter your name: ")
+
+            save_score(player_name, score)
+
+            display_high_scores()
             break
 
         guess = input("\nEnter a letter: ").lower()
@@ -123,3 +129,6 @@ def start_game():
     else:
         print(f"\nGame Over! The word was: {word}")
         print(f"Final Score: {score}")
+        player_name = input("\nEnter your name: ")
+        save_score(player_name, score)
+        display_high_scores()

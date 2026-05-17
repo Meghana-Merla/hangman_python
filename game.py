@@ -66,6 +66,7 @@ def start_game():
     guessed_letters = []
     wrong_guesses = 0
     max_wrong_guesses = 6
+    score = 0
 
     print(f"\nCategory: {selected_category}")
     print(f"Difficulty: {selected_difficulty}")
@@ -84,9 +85,15 @@ def start_game():
 
         print(hangman_stages[wrong_guesses])
         print(display_word)
+        print(f"\nCurrent Score: {score}")
 
         if "_" not in display_word:
+            score += 50
+
             print("\nYou Won!")
+            print(f"Bonus Awarded: +50")
+
+            print(f"\nFinal Score: {score}")
             break
 
         guess = input("\nEnter a letter: ").lower()
@@ -103,10 +110,16 @@ def start_game():
 
         guessed_letters.append(guess)
 
-        if guess not in word:
+        if guess in word:
+
+            score += 10
+            print("\nCorrect Guess! +10 Points")
+
+        else:
             wrong_guesses += 1
             print("\nIncorrect Guess!")
             print(f"Remaining Lives: {max_wrong_guesses - wrong_guesses}")
 
     else:
         print(f"\nGame Over! The word was: {word}")
+        print(f"Final Score: {score}")

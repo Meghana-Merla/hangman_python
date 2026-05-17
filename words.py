@@ -1,25 +1,61 @@
 words = {
-    "Animals": [
-        "tiger",
-        "elephant",
-        "giraffe",
-        "kangaroo",
-        "dolphin"
-    ],
+    "Animals": {
+        "Easy": [
+            "lion",
+            "tiger",
+            "zebra"
+        ],
 
-    "Countries": [
-        "india",
-        "canada",
-        "brazil",
-        "germany",
-        "australia"
-    ],
+        "Medium": [
+            "giraffe",
+            "kangaroo",
+            "dolphin"
+        ],
 
-    "Programming": [
-        "python",
-        "variable",
-        "function",
-        "developer",
-        "algorithm"
-    ]
+        "Hard": [
+            "chimpanzee",
+            "hippopotamus",
+            "crocodile"
+        ]
+    },
+
+    "Countries": {
+        "Easy": [
+            "india",
+            "china",
+            "japan"
+        ],
+
+        "Medium": [
+            "canada",
+            "brazil",
+            "germany"
+        ],
+
+        "Hard": [
+            "australia",
+            "kazakhstan",
+            "switzerland"
+        ]
+    },
+
+    "Programming": {
+        "Easy": [
+            "python",
+            "string",
+            "coding"
+        ],
+
+        "Medium": [
+            "function",
+            "variable",
+            "debugging"
+        ],
+
+        "Hard": [
+            "algorithm",
+            "polymorphism",
+            "encapsulation"
+        ]
+    }
 }
